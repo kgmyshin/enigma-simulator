@@ -12,35 +12,44 @@ sealed class Rotor(
         val LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()
     }
 
-    private var initialOffset = 0
-    private var offset = 0
+    private var initialPosition = 0
+    private var tickCount = 0
     private var next: Converter? = null
 
     fun connect(next: Converter) {
         this.next = next
     }
 
-    fun tick() {
-        val next = next ?: throw RuntimeException("not found next rotor")
-        if (offset == (LETTERS.size - 1) && next is Rotor) {
-            next.tick()
-        }
-        offset = (offset + 1) % LETTERS.size
+    fun setInitialPosition(initialPosition: Int) {
+        this.initialPosition = initialPosition
     }
 
-    fun convert(pos: Int): Int {
+    fun tick() {
         val next = next ?: throw RuntimeException("not found next rotor")
-        val nextPos =
-            (writingTable[(initialOffset + offset + pos) % LETTERS.size].toInt() - (initialOffset + offset) - 'A'.toInt() + LETTERS.size) % LETTERS.size
-        val convertedPos = when (next) {
+        if (tickCount == (LETTERS.size - 1) && next is Rotor) {
+            next.tick()
+        }
+        tickCount = (tickCount + 1) % LETTERS.size
+    }
+
+    fun convert(offset: Int): Int {
+        val next = next ?: throw RuntimeException("not found next rotor")
+        val input = LETTERS[(initialPosition + tickCount + offset) % LETTERS.size]
+        val sendToNext = writingTable[LETTERS.indexOf(input)]
+        val nextOffset =
+            (sendToNext.toInt() - (initialPosition + tickCount) - 'A'.toInt() + LETTERS.size) % LETTERS.size
+        val returnByNextOffset = when (next) {
             is Rotor -> {
-                next.convert(nextPos)
+                next.convert(nextOffset)
             }
             is Reflector -> {
-                next.convert(nextPos)
+                next.convert(nextOffset)
             }
             else -> throw RuntimeException("wtf")
         }
-        return (writingTable.indexOf(LETTERS[(initialOffset + offset + convertedPos) % LETTERS.size]) - (initialOffset + offset) + LETTERS.size) % LETTERS.size
+        val returnByNext = LETTERS[(initialPosition + tickCount + returnByNextOffset) % LETTERS.size]
+        val outOffset =
+            (writingTable.indexOf(returnByNext) - (initialPosition + tickCount) + LETTERS.size) % LETTERS.size
+        return outOffset
     }
 }

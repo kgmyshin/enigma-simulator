@@ -17,9 +17,10 @@ class Plugboard(
     fun convert(char: Char): Char {
         val next = next ?: throw RuntimeException("not found rotor")
         next.tick()
-        val converted = (next.convert(writingTable[LETTERS.indexOf(char)].toInt() - 'A'.toInt()) + 'A'.toInt()).toChar()
-        return LETTERS[writingTable.indexOf(converted)]
-//        return (next.convert(char.toInt() - 'A'.toInt()) + 'A'.toInt()).toChar()
+        val sendToNext = writingTable[LETTERS.indexOf(char)].toInt() - 'A'.toInt()
+        val returnByNext = ((next.convert(sendToNext) + 'A'.toInt()).toChar())
+        val out = LETTERS[writingTable.indexOf(returnByNext)]
+        return out
     }
 
 }
