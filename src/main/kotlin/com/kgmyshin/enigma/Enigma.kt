@@ -1,12 +1,14 @@
 package com.kgmyshin.enigma
 
 class Enigma(
-    private val rightRotor: Rotor,
+    private val plugboard: Plugboard,
+    rightRotor: Rotor,
     middleRotor: Rotor,
     leftRotor: Rotor,
     reflector: Reflector
 ) {
     init {
+        plugboard.connect(rightRotor)
         rightRotor.connect(middleRotor)
         middleRotor.connect(leftRotor)
         leftRotor.connect(reflector)
@@ -16,8 +18,7 @@ class Enigma(
         val upperCasedCharArray = str.toUpperCase().toCharArray()
         val buff = StringBuffer()
         upperCasedCharArray.forEach { char ->
-            rightRotor.tick()
-            buff.append((rightRotor.convert(char.toInt() - 'A'.toInt()) + 'A'.toInt()).toChar())
+            buff.append(plugboard.convert(char))
         }
         return buff.toString()
     }
