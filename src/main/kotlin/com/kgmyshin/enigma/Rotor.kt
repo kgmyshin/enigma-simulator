@@ -1,12 +1,12 @@
 package com.kgmyshin.enigma
 
 sealed class Rotor(
-    private val writingTable: CharArray
+    private val writingTable: WritingTable
 ) : Converter {
 
-    class RotorI : Rotor("EKMFLGDQVZNTOWYHXUSPAIBRCJ".toCharArray())
-    class RotorII : Rotor("AJDKSIRUXBLHWTMCQGZNPYFVOE".toCharArray())
-    class RotorIII : Rotor("BDFHJLCPRTXVZNYEIWGAKMUSQO".toCharArray())
+    class RotorI : Rotor(WritingTable("EKMFLGDQVZNTOWYHXUSPAIBRCJ".toCharArray()))
+    class RotorII : Rotor(WritingTable("AJDKSIRUXBLHWTMCQGZNPYFVOE".toCharArray()))
+    class RotorIII : Rotor(WritingTable("BDFHJLCPRTXVZNYEIWGAKMUSQO".toCharArray()))
 
     companion object {
         val LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()
@@ -34,11 +34,11 @@ sealed class Rotor(
 
     fun convert(offset: Int): Int {
         val next = next ?: throw RuntimeException("not found next rotor")
-        val input = LETTERS[(initialPosition + tickCount + offset) % LETTERS.size]
-        val sendToNext = writingTable[LETTERS.indexOf(input)]
-        val nextOffset =
-            (sendToNext.toInt() - (initialPosition + tickCount) - 'A'.toInt() + LETTERS.size) % LETTERS.size
-        val returnByNextOffset = when (next) {
+        val currentStart = Alphabet(initialPosition + tickCount)
+        val input = Alphabet(initialPosition + tickCount + offset)
+        val sendToNext = writingTable.frontToBack(input)
+        val nextOffset = sendToNext.diff(currentStart)
+        val returnByNext = when (next) {
             is Rotor -> {
                 next.convert(nextOffset)
             }
@@ -46,10 +46,7 @@ sealed class Rotor(
                 next.convert(nextOffset)
             }
             else -> throw RuntimeException("wtf")
-        }
-        val returnByNext = LETTERS[(initialPosition + tickCount + returnByNextOffset) % LETTERS.size]
-        val outOffset =
-            (writingTable.indexOf(returnByNext) - (initialPosition + tickCount) + LETTERS.size) % LETTERS.size
-        return outOffset
+        }.let { Alphabet(initialPosition + tickCount + it) }
+        return writingTable.backToFront(returnByNext).diff(currentStart)
     }
 }

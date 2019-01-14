@@ -18,7 +18,7 @@ class Enigma(
         val upperCasedCharArray = str.toUpperCase().toCharArray()
         val buff = StringBuffer()
         upperCasedCharArray.forEach { char ->
-            buff.append(plugboard.convert(char))
+            buff.append(plugboard.convert(Alphabet(char)).char)
         }
         return buff.toString()
     }
