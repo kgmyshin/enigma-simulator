@@ -1,10 +1,12 @@
 package com.kgmyshin.enigma
 
 sealed class Reflector(
-    private val writingTable: WritingTable
+  private val wiringTable: WiringTable
 ) : Converter {
 
-    class ReflectorB : Reflector(WritingTable("YRUHQSLDPXNGOKMIEBFZCWVJAT".toCharArray()))
+  object ReflectorB : Reflector(WiringTable("YRUHQSLDPXNGOKMIEBFZCWVJAT".toCharArray()))
 
-    fun convert(pos: Int): Int = writingTable.frontToBack(Alphabet(pos)).pos()
+  override fun tick() {}
+
+  override fun convert(pos: Int): Int = wiringTable.frontToBack(Alphabet(pos)).pos()
 }

@@ -1,3 +1,7 @@
 package com.kgmyshin.enigma
 
-interface Converter
+interface Converter {
+  fun tick()
+
+  fun convert(offset: Int): Int
+}

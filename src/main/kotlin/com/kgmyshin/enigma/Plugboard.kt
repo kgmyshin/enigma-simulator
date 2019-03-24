@@ -1,7 +1,7 @@
 package com.kgmyshin.enigma
 
 class Plugboard(
-    private val writingTable: WritingTable
+    private val wiringTable: WiringTable
 ) {
     private var next: Rotor? = null
 
@@ -12,9 +12,9 @@ class Plugboard(
     fun convert(alphabet: Alphabet): Alphabet {
         val next = next ?: throw RuntimeException("not found rotor")
         next.tick()
-        val sendToNext = writingTable.frontToBack(alphabet)
+        val sendToNext = wiringTable.frontToBack(alphabet)
         val returnByNext = Alphabet(next.convert(sendToNext.pos()))
-        return writingTable.backToFront(returnByNext)
+        return wiringTable.backToFront(returnByNext)
     }
 
 }
