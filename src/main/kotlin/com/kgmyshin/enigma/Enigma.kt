@@ -1,5 +1,7 @@
 package com.kgmyshin.enigma
 
+import com.kgmyshin.enigma.rotor.Rotor
+
 class Enigma(
     private val plugboard: Plugboard,
     rightRotor: Rotor,

@@ -1,4 +1,7 @@
-package com.kgmyshin.enigma
+package com.kgmyshin.enigma.rotor
+
+import com.kgmyshin.enigma.Alphabet
+import com.kgmyshin.enigma.Converter
 
 sealed class Rotor(
   private val wiringTable: WiringTable

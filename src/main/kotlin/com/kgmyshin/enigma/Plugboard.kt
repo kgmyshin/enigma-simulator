@@ -1,5 +1,8 @@
 package com.kgmyshin.enigma
 
+import com.kgmyshin.enigma.rotor.Rotor
+import com.kgmyshin.enigma.rotor.WiringTable
+
 class Plugboard(
     private val wiringTable: WiringTable
 ) {

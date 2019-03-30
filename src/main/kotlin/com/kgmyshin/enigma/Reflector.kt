@@ -1,5 +1,7 @@
 package com.kgmyshin.enigma
 
+import com.kgmyshin.enigma.rotor.WiringTable
+
 sealed class Reflector(
   private val wiringTable: WiringTable
 ) : Converter {

@@ -1,5 +1,8 @@
 package com.kgmyshin.enigma
 
+import com.kgmyshin.enigma.rotor.Rotor
+import com.kgmyshin.enigma.rotor.WiringTable
+
 fun main(args: Array<String>) {
   val plugboard1 = Plugboard(WiringTable("ZBCDEFGHIJKLMNOPQRSTUVWXYA".toCharArray()))
   val plugboard2 = Plugboard(WiringTable("ZBCDEFGHIJKLMNOPQRSTUVWXYA".toCharArray()))

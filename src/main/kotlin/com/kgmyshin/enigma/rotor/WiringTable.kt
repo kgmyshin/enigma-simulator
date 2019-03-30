@@ -1,4 +1,6 @@
-package com.kgmyshin.enigma
+package com.kgmyshin.enigma.rotor
+
+import com.kgmyshin.enigma.Alphabet
 
 class WiringTable(
   charArray: CharArray
