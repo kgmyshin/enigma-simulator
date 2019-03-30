@@ -1,5 +1,6 @@
 package com.kgmyshin.enigma
 
+import com.kgmyshin.enigma.reflector.Reflector
 import com.kgmyshin.enigma.rotor.Rotor
 
 class Enigma(
