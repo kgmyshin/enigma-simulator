@@ -1,12 +1,26 @@
 package com.kgmyshin.enigma
 
+import com.kgmyshin.enigma.plugboard.Plugboard
 import com.kgmyshin.enigma.reflector.Reflector
 import com.kgmyshin.enigma.rotor.Rotor
-import com.kgmyshin.enigma.rotor.WiringTable
 
 fun main(args: Array<String>) {
-  val plugboard1 = Plugboard(WiringTable("ZBCDEFGHIJKLMNOPQRSTUVWXYA".toCharArray()))
-  val plugboard2 = Plugboard(WiringTable("ZBCDEFGHIJKLMNOPQRSTUVWXYA".toCharArray()))
+  val plugboard1 = Plugboard(
+    com.kgmyshin.enigma.plugboard.WiringTable(
+      mapOf(
+        'A' to 'C',
+        'B' to 'Z'
+      )
+    )
+  )
+  val plugboard2 = Plugboard(
+    com.kgmyshin.enigma.plugboard.WiringTable(
+      mapOf(
+        'A' to 'C',
+        'B' to 'Z'
+      )
+    )
+  )
   val enigma1 = Enigma(
     plugboard1,
     Rotor.RotorI(),
@@ -21,6 +35,10 @@ fun main(args: Array<String>) {
     Rotor.RotorIII(),
     Reflector.ReflectorB
   )
-  println(enigma1.convert("AAAAAA"))
-  println(enigma2.convert("TVZOOY"))
+
+  val cipher1 = "HELLO".map { enigma1.type(it) }.toCharArray()
+  println(cipher1)
+
+  val cipher2 = "MFNAB".map { enigma2.type(it) }.toCharArray()
+  println(cipher2)
 }
